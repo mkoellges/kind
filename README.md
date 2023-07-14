@@ -35,3 +35,21 @@ Change the ip range in metallb.yaml and
 ```sh
 kubectl apply -f metallb.yaml
 ```
+
+## Install ArgoCD
+
+To install ArgoCD follow the README.md from [here](https://github.com/mkoellges/argocd-demo)
+
+
+
+## Bootstrap the new Cluster
+
+To Bootstrap this new cluster using ArgoCD, clone [This Repo](https://github.com/mkoellges/argocd-ops).
+
+Then run the command
+
+```sh
+kubectl apply -f project.yaml
+```
+
+Your Cluster is bootstrapped with all basic applications.
