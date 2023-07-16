@@ -49,7 +49,7 @@ To Bootstrap this new cluster using ArgoCD, clone [This Repo](https://github.com
 Then run the command
 
 ```sh
-kubectl apply -f project.yaml
+kubectl apply -f .
 ```
 
 Your Cluster is bootstrapped with all basic applications.
