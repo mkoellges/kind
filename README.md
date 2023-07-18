@@ -5,7 +5,7 @@
 ```sh
 kind create cluster \
     --name monitoring \
-    --image kindest/node:v1.25.3 \
+    --image kindest/node:v1.26.3 \
     --config kind.yaml
 ```
 
