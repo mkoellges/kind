@@ -3,18 +3,15 @@ apiVersion: kind.x-k8s.io/v1alpha4
 kubeadmConfigPatches:
 - |-
   kind: ClusterConfiguration
-  # configure controller-manager bind address
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0 #Disable localhost binding
       secure-port: "0"      #Disable the https 
       port: "10257"         #Enable http on port 10257
-  # configure etcd metrics listen address
   etcd:
     local:
       extraArgs:
         listen-metrics-urls: http://0.0.0.0:2381
-  # configure scheduler bind address
   scheduler:
     extraArgs:
       bind-address: 0.0.0.0  #Disable localhost binding
@@ -22,7 +19,6 @@ kubeadmConfigPatches:
       port: "10259"          #Enable http on port 10259
 - |-
   kind: KubeProxyConfiguration
-  # configure proxy metrics bind address
   metricsBindAddress: 0.0.0.0
 nodes:
 - role: control-plane
