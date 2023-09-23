@@ -24,7 +24,7 @@ kubectl wait --namespace metallb-system \
                 --timeout=90s
 ```
 
-## Setup address pool used by loadbalancers 🔗︎
+## Setup address pool used by loadbalancers
 
 ```sh
 docker network inspect -f '{{.IPAM.Config}}' kind
@@ -39,8 +39,6 @@ kubectl apply -f metallb.yaml
 ## Install ArgoCD
 
 To install ArgoCD follow the README.md from [here](https://github.com/mkoellges/argocd-demo)
-
-
 
 ## Bootstrap the new Cluster
 
