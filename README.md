@@ -4,10 +4,18 @@
 
 ```sh
 kind create cluster \
-    --name monitoring \
+    --name dev-1 \
     --image kindest/node:v1.26.3 \
     --config kind.yaml
 ```
+
+You have different versions aviable like
+
+- kindest/node:v1.26.6
+- kindest/node:v1.27.3
+- kindest/node:v1.28.0
+
+You can check all available versions [here0](https://hub.docker.com/r/kindest/node/tags?page=1&name=27)
 
 ## Add loadbalancer capabilities
 
