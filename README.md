@@ -43,11 +43,3 @@ To install ArgoCD follow the README.md from [here](https://github.com/mkoellges/
 ## Bootstrap the new Cluster
 
 To Bootstrap this new cluster using ArgoCD, clone [This Repo](https://github.com/mkoellges/argocd-ops).
-
-Then run the command
-
-```sh
-kubectl apply -f .
-```
-
-Your Cluster is bootstrapped with all basic applications.
