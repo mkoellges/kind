@@ -34,6 +34,17 @@ Check the correct network ipAddress Settings in `./manifests/metallb.yaml` with
 docker network inspect -f '{{.IPAM.Config}}' kind
 ```
 
+Check the network CIDR range in `terraform/manifests/metallb.yaml` and change if needed the following setting:
+
+```yaml
+...
+spec:
+  addresses:
+  - 172.18.0.200-172.18.0.250
+
+...
+```
+
 ## Bootstrap the new Cluster
 
 To Bootstrap this new cluster using ArgoCD, clone [This Repo](https://github.com/mkoellges/argocd-ops).
