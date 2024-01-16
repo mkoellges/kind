@@ -6,7 +6,7 @@ Set the desired kubernetes version in `dev-1.tfvars` file
 
 ```yaml
 ...
-kubernetes_version  = "kindest/node:v1.27.1"
+kubernetes_version  = "kindest/node:v1.27.3"
 ...
 ```
 
