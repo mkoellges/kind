@@ -1,40 +1,45 @@
+
 provider "kind" {}
 
 resource "kind_cluster" "default" {
-  name           = var.cluster_name
-  wait_for_ready = true
-  node_image     = var.kubernetes_version
-
-  kind_config {
-    kind        = "Cluster"
-    api_version = "kind.x-k8s.io/v1alpha4"
-
-    node {
-      role = "control-plane"
-    }
-
-    node {
-      role = "worker"
-      kubeadm_config_patches = [
-        "kind: InitConfiguration\nnodeRegistration:\n  kubeletExtraArgs:\n    node-labels: \"ingress-ready=true\"\n"
-      ]
-
-      extra_port_mappings {
-        container_port = 80
-        host_port      = 80
-      }
-      extra_port_mappings {
-        container_port = 443
-        host_port      = 443
-      }
-    }
-
-    node {
-      role = "worker"
-    }
-
-    node {
-      role = "worker"
-    }
-  }
+  name        = var.cluster_name
+  node_image  = var.kubernetes_version
+  kind_config = <<KIONF
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+kubeadmConfigPatches:
+- |-
+  kind: ClusterConfiguration
+  # configure controller-manager bind address
+  controllerManager:
+    extraArgs:
+      bind-address: 0.0.0.0
+  # configure etcd metrics listen address
+  etcd:
+    local:
+      extraArgs:
+        listen-metrics-urls: http://0.0.0.0:2381
+  # configure scheduler bind address
+  scheduler:
+    extraArgs:
+      bind-address: 0.0.0.0
+- |-
+  kind: KubeProxyConfiguration
+  # configure proxy metrics bind address
+  metricsBindAddress: 0.0.0.0
+nodes:
+- role: control-plane
+- role: worker
+  labels:
+    ingress : worker
+  extraPortMappings:
+    - containerPort: 80
+      hostPort: 80
+      protocol: TCP
+    - containerPort: 443
+      hostPort: 443
+      protocol: TCP
+- role: worker
+- role: worker
+KIONF
 }
