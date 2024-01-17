@@ -45,6 +45,22 @@ spec:
 ...
 ```
 
+The cluster is now created, a metallb loadbalancer is installed and argoCD is deployed.
+
+## Connect to argocd
+
+Forward the service port to access the argocd
+
+```bash
+kubectl port-forward -n argocd svc/argocd-server 8443:443
+```
+
+Now you can access ArgoCD using your browser with `http://localhost:8443` and follow the bootstrap process later.
+
+Username: `admin`
+
+Password: The output of  ```kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d```
+
 ## Bootstrap the new Cluster
 
 To Bootstrap this new cluster using ArgoCD, clone [This Repo](https://github.com/mkoellges/argocd-ops).
