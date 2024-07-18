@@ -1,9 +1,10 @@
-
 provider "kind" {}
 
 resource "kind_cluster" "default" {
-  name        = var.cluster_name
-  node_image  = var.kubernetes_version
+  name            = var.cluster_name
+  node_image      = var.kubernetes_version
+  wait_for_ready  = true
+
   kind_config = <<KIONF
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4

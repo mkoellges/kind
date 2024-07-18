@@ -1,29 +1,23 @@
 provider "kubernetes" {
-  config_path    = "${var.cluster_name-config}-config"
-  config_context = "kind-${var.cluster_name}"
+  config_path = kind_cluster.default.kubeconfig_path
 }
 
-resource "helm_release" "metallb" {
-  depends_on       = [kind_cluster.default]
-  name             = "metallb"
-  namespace        = "metallb"
-  create_namespace = true
-  repository       = "https://metallb.github.io/metallb"
-  chart            = "metallb"
-  wait             = true
-
-  values = [
-    "${file("./helm/metallb-values.yaml")}"
-  ]
+data "http" "metallb_manifest" {
+  url = "https://raw.githubusercontent.com/metallb/metallb/v0.14.7/config/manifests/metallb-native.yaml"
 }
 
-data "kubectl_file_documents" "metallb" {
-  content = file("./manifests/metallb.yaml")
+resource "null_resource" "metallb_install" {
+  depends_on = [kind_cluster.default]
+
+  provisioner "local-exec" {
+    command = "kubectl apply -f ${data.http.metallb_manifest.url}"
+  }
 }
 
-resource "kubectl_manifest" "deploy-metallb" {
-  depends_on = [helm_release.metallb]
+resource "null_resource" "metallb_config" {
+  depends_on = [null_resource.metallb_install]
 
-  for_each  = data.kubectl_file_documents.metallb.manifests
-  yaml_body = each.value
+  provisioner "local-exec" {
+    command = "kubectl apply -f ./manifests/metallb-configmap.yaml"
+  }
 }

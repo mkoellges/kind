@@ -1,5 +1,12 @@
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+
+}
+
 resource "helm_release" "argocd" {
-  depends_on       = [kind_cluster.default]
+  depends_on       = [null_resource.metallb_config]
   name             = "argocd"
   namespace        = "argocd"
   create_namespace = true

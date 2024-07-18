@@ -1,5 +1,24 @@
 # Kind
 
+## Preparation
+
+Check the correct network ipAddress Settings in `./manifests/metallb.yaml` with
+
+```bash
+docker network inspect -f '{{.IPAM.Config}}' kind
+```
+
+Check the network CIDR range in `terraform/manifests/metallb.yaml` and change if needed the following setting:
+
+```yaml
+...
+spec:
+  addresses:
+  - 172.18.0.200-172.18.0.250
+
+...
+```
+
 ## Create kind cluster
 
 Set the desired kubernetes version in `dev-1.tfvars` file
@@ -24,25 +43,6 @@ terraform init
 
 terraform apply -var-file dev-1.tfvars
 
-# Workaround: run it twice!
-terraform apply -var-file dev-1.tfvars
-```
-
-Check the correct network ipAddress Settings in `./manifests/metallb.yaml` with
-
-```bash
-docker network inspect -f '{{.IPAM.Config}}' kind
-```
-
-Check the network CIDR range in `terraform/manifests/metallb.yaml` and change if needed the following setting:
-
-```yaml
-...
-spec:
-  addresses:
-  - 172.18.0.200-172.18.0.250
-
-...
 ```
 
 The cluster is now created, a metallb loadbalancer is installed and argoCD is deployed.
