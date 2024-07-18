@@ -43,6 +43,11 @@ terraform init
 
 terraform apply -var-file dev-1.tfvars
 
+# In this moment the first run will fail. As a workaround until it's fixed apply twice
+
+terraform apply -var-file dev-1.tfvars
+
+
 ```
 
 The cluster is now created, a metallb loadbalancer is installed and argoCD is deployed.

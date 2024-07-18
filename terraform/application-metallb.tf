@@ -8,9 +8,17 @@ data "http" "metallb_manifest" {
 
 resource "null_resource" "metallb_install" {
   depends_on = [kind_cluster.default]
-
+  
   provisioner "local-exec" {
     command = "kubectl apply -f ${data.http.metallb_manifest.url}"
+  }
+}
+
+resource "null_resource" "metallb_svc_patch" {
+  depends_on = [null_resource.metallb_install]
+
+  provisioner "local-exec" {
+    command = "kubectl patch svc metallb-webhook-service -n metallb-system -p '{\"spec\": {\"type\": \"LoadBalancer\"}}'"
   }
 }
 
