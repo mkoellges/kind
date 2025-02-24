@@ -2,21 +2,10 @@
 
 ## Preparation
 
-Check the correct network ipAddress Settings in `./manifests/metallb.yaml` with
+Install the Kubernetes Cloud Provider for KIND - you need it for using Service Type Loadabalancer later.
 
 ```bash
-docker network inspect -f '{{.IPAM.Config}}' kind
-```
-
-Check the network CIDR range in `terraform/manifests/metallb.yaml` and change if needed the following setting:
-
-```yaml
-...
-spec:
-  addresses:
-  - 172.18.0.200-172.18.0.250
-
-...
+brew install cloud-provider-kind
 ```
 
 ## Create kind cluster
@@ -43,24 +32,25 @@ terraform init
 
 terraform apply -var-file dev-1.tfvars
 
-# In this moment the first run will fail. As a workaround until it's fixed apply twice
-
-terraform apply -var-file dev-1.tfvars
-
-
 ```
 
-The cluster is now created, a metallb loadbalancer is installed and argoCD is deployed.
+The cluster is now created and argoCD is deployed.
+
+## Run the Cloud Provider for Kind
+
+Open a separate window and run
+
+```bash
+sudo cloud-provider-kind
+```
+
+Do not close this window - the proxy you started is needed!
+
+
 
 ## Connect to argocd
 
-Forward the service port to access the argocd
-
-```bash
-kubectl port-forward -n argocd svc/argocd-server 8443:443
-```
-
-Now you can access ArgoCD using your browser with `http://localhost:8443` and follow the bootstrap process later.
+Connect to argocd usiing
 
 Username: `admin`
 
