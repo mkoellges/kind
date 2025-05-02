@@ -1,8 +1,8 @@
 global:
-  domain: argocd.example.com
+  domain: argocd.she-test.com
 server:
   ingress:
     enabled: true
     ingressClassName: "nginx-internal"
-    hostname: "argocd.example.com"
+    hostname: "argocd.she-test.com"
     tls: false
